@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.logistica.model.Cliente;
 import com.logistica.repository.ClienteRepository;
+import com.logistica.service.ClienteService;
 
 @RestController
 @RequestMapping("/clientes")
@@ -26,6 +27,8 @@ public class ClienteController {
 
 	@Autowired
 	ClienteRepository repository;
+	@Autowired
+	ClienteService service;
 	
 	@GetMapping()
 	public List<Cliente> listar() {
@@ -42,14 +45,14 @@ public class ClienteController {
 	@PostMapping
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public Cliente adicionar(@Valid @RequestBody Cliente cliente) {
-		return repository.save(cliente);
+		return service.salvar(cliente);
 	}
 	
 	@PutMapping("/{id}")
 	public ResponseEntity<Cliente> atualizar(@Valid @PathVariable Long id, @RequestBody Cliente cliente){
 		if(repository.existsById(id)) {
 			cliente.setId(id);
-			cliente = repository.save(cliente);
+			cliente = service.salvar(cliente);
 			return ResponseEntity.ok(cliente);
 		}
 		return ResponseEntity.notFound().build();
@@ -58,7 +61,7 @@ public class ClienteController {
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> remover(@PathVariable Long id){
 		if(repository.existsById(id)) {
-			repository.deleteById(id);
+			service.excluir(id);
 			return ResponseEntity.noContent().build();
 		}
 		return ResponseEntity.notFound().build();
