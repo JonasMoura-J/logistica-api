@@ -35,6 +35,10 @@ public class Entrega {
 	private LocalDateTime dataPedido;
 	private LocalDateTime dataFinalizacao;
 	
+	public Entrega() {
+		
+	}
+	
 	public Entrega(Long id, Cliente cliente, Destinatario destinatario, BigDecimal taxa, StatusEntrega status,
 			LocalDateTime dataPedido, LocalDateTime dataFinalizacao) {
 		super();
